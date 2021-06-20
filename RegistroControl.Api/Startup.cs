@@ -8,6 +8,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 using RegistroControl.Core.Interfaces;
+using RegistroControl.Core.Services;
 using RegistroControl.Infrastructure.Data;
 using RegistroControl.Infrastructure.Repositories;
 
@@ -35,6 +36,7 @@ namespace RegistroControl.Api
             services.AddDbContext<RegistroControlContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
             services.AddTransient<IStudentRepository, StudentRepository>();
+            services.AddTransient<IStudentService, StudentService>();
 
             services.AddSwaggerGen(c =>
             {

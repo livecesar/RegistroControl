@@ -14,19 +14,19 @@ namespace RegistroControl.Api.Controllers
     [ApiController]
     public class StudentController : ControllerBase
     {
-        private readonly IStudentRepository _studentRepository;
+        private readonly IStudentService _studentService;
         private readonly IMapper _mapper;
 
 
-        public StudentController(IStudentRepository studentRepository, IMapper mapper)
+        public StudentController(IStudentService studentService, IMapper mapper)
         {
-            _studentRepository = studentRepository;
+            _studentService = studentService;
             _mapper = mapper;
         }
         [HttpGet]
         public async Task<ActionResult> GetStudents()
         {
-            var students = await _studentRepository.GetStudents();
+            var students = await _studentService.GetStudents();
             var studentsDto = _mapper.Map<IEnumerable<StudentDto>>(students);
             var response = new ApiResponse<IEnumerable<StudentDto>>(studentsDto);
             return Ok(response);
@@ -35,7 +35,7 @@ namespace RegistroControl.Api.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult> GetStudent(int idStudent)
         {
-            var student = await _studentRepository.GetStudent(idStudent);
+            var student = await _studentService.GetStudent(idStudent);
             var studentDto = _mapper.Map<StudentDto>(student);
             var response = new ApiResponse<StudentDto>(studentDto);
             return Ok(response);
@@ -45,7 +45,7 @@ namespace RegistroControl.Api.Controllers
         public async Task<ActionResult> InsertStudent(StudentDto studentDto)
         {
             var student = _mapper.Map<Student>(studentDto);
-            await _studentRepository.InsertStudent(student);
+            await _studentService.InsertStudent(student);
 
             studentDto = _mapper.Map<StudentDto>(student);
 
@@ -59,7 +59,7 @@ namespace RegistroControl.Api.Controllers
             var student = _mapper.Map<Student>(studentDto);
             student.StudentId = id;
 
-            var result = await _studentRepository.UpdateStudent(student);
+            var result = await _studentService.UpdateStudent(student);
 
             var response = new ApiResponse<bool>(result);
             return Ok(response);
@@ -68,7 +68,7 @@ namespace RegistroControl.Api.Controllers
         [HttpDelete ("{id}")]
         public async Task<ActionResult> DeleteStudent(int id)
         {
-            var result = await _studentRepository.DeleteStudent(id);
+            var result = await _studentService.DeleteStudent(id);
             var response = new ApiResponse<bool>(result);
             return Ok(response);
         }
