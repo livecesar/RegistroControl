@@ -24,9 +24,11 @@ namespace RegistroControl.Core.Entities
         public bool Active { get; set; }
         public int CityId { get; set; }
         public int DniTypeId { get; set; }
+        public int? SystemUserId { get; set; }
 
         public virtual City City { get; set; }
         public virtual DniType DniType { get; set; }
+        public virtual SystemUser SystemUser { get; set; }
         public virtual ICollection<CourseStudent> CourseStudents { get; set; }
     }
 }

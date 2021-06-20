@@ -26,6 +26,7 @@ namespace RegistroControl.Infrastructure.Data
         public virtual DbSet<EventLog> EventLogs { get; set; }
         public virtual DbSet<EventLogType> EventLogTypes { get; set; }
         public virtual DbSet<Student> Students { get; set; }
+        public virtual DbSet<SystemUser> SystemUsers { get; set; }
         public virtual DbSet<SystemUserType> SystemUserTypes { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -35,7 +36,7 @@ namespace RegistroControl.Infrastructure.Data
             modelBuilder.Entity<Administrator>(entity =>
             {
                 entity.HasKey(e => e.AdminId)
-                    .HasName("PK__Administ__719FE48845917D0C");
+                    .HasName("PK__Administ__719FE48835270963");
 
                 entity.ToTable("Administrator");
 
@@ -45,6 +46,11 @@ namespace RegistroControl.Infrastructure.Data
                     .IsUnicode(false);
 
                 entity.Property(e => e.AdminName)
+                    .IsRequired()
+                    .HasMaxLength(100)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.AdminSurname)
                     .IsRequired()
                     .HasMaxLength(100)
                     .IsUnicode(false);
@@ -71,11 +77,6 @@ namespace RegistroControl.Infrastructure.Data
                     .HasMaxLength(100)
                     .IsUnicode(false);
 
-                entity.Property(e => e.StudentSurname)
-                    .IsRequired()
-                    .HasMaxLength(100)
-                    .IsUnicode(false);
-
                 entity.HasOne(d => d.City)
                     .WithMany(p => p.Administrators)
                     .HasForeignKey(d => d.CityId)
@@ -87,6 +88,11 @@ namespace RegistroControl.Infrastructure.Data
                     .HasForeignKey(d => d.DniTypeId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_DNITYPE_ADMIN");
+
+                entity.HasOne(d => d.SystemUser)
+                    .WithMany(p => p.Administrators)
+                    .HasForeignKey(d => d.SystemUserId)
+                    .HasConstraintName("FK_SYSTEMUSER_ADMINISTRATOR");
             });
 
             modelBuilder.Entity<City>(entity =>
@@ -135,7 +141,7 @@ namespace RegistroControl.Infrastructure.Data
             modelBuilder.Entity<DniType>(entity =>
             {
                 entity.HasKey(e => e.DniId)
-                    .HasName("PK__DniType__4FDF83222E3E1EEA");
+                    .HasName("PK__DniType__4FDF83222C8BF95A");
 
                 entity.ToTable("DniType");
 
@@ -230,12 +236,37 @@ namespace RegistroControl.Infrastructure.Data
                     .HasForeignKey(d => d.DniTypeId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_DNITYPE_STUDENT");
+
+                entity.HasOne(d => d.SystemUser)
+                    .WithMany(p => p.Students)
+                    .HasForeignKey(d => d.SystemUserId)
+                    .HasConstraintName("FK_SYSTEMUSER_STUDENT");
+            });
+
+            modelBuilder.Entity<SystemUser>(entity =>
+            {
+                entity.ToTable("SystemUser");
+
+                entity.Property(e => e.UserPassword)
+                    .HasMaxLength(100)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Username)
+                    .IsRequired()
+                    .HasMaxLength(100)
+                    .IsUnicode(false);
+
+                entity.HasOne(d => d.SysUserType)
+                    .WithMany(p => p.SystemUsers)
+                    .HasForeignKey(d => d.SysUserTypeId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_SYSUSER_SYSTEMUSERTYPE");
             });
 
             modelBuilder.Entity<SystemUserType>(entity =>
             {
                 entity.HasKey(e => e.UserTypeId)
-                    .HasName("PK__SystemUs__40D2D81669FEF832");
+                    .HasName("PK__SystemUs__40D2D816201CF445");
 
                 entity.ToTable("SystemUserType");
 

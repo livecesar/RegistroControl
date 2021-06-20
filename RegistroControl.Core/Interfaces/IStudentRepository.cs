@@ -10,5 +10,7 @@ namespace RegistroControl.Core.Interfaces
         Task<IEnumerable<Student>> GetStudents();
         Task<Student> GetStudent(int idStudent);
         Task InsertStudent(Student student);
+        Task<bool> DeleteStudent(int id);
+        Task<bool> UpdateStudent(Student student);
     }
 }

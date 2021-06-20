@@ -34,5 +34,15 @@ namespace RegistroControl.Infrastructure.Repositories
             _context.Students.Add(student);
             await _context.SaveChangesAsync();
         }
+
+        public Task<bool> DeleteStudent(int id)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public Task<bool> UpdateStudent(Student student)
+        {
+            throw new System.NotImplementedException();
+        }
     }
 }

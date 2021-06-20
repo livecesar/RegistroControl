@@ -10,6 +10,7 @@ namespace RegistroControl.Core.Entities
         public SystemUserType()
         {
             EventLogs = new HashSet<EventLog>();
+            SystemUsers = new HashSet<SystemUser>();
         }
 
         public int UserTypeId { get; set; }
@@ -17,5 +18,6 @@ namespace RegistroControl.Core.Entities
         public bool Active { get; set; }
 
         public virtual ICollection<EventLog> EventLogs { get; set; }
+        public virtual ICollection<SystemUser> SystemUsers { get; set; }
     }
 }
