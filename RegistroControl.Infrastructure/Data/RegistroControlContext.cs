@@ -20,6 +20,7 @@ namespace RegistroControl.Infrastructure.Data
 
         public virtual DbSet<Administrator> Administrators { get; set; }
         public virtual DbSet<City> Cities { get; set; }
+        public virtual DbSet<Department> Departments { get; set; }
         public virtual DbSet<Course> Courses { get; set; }
         public virtual DbSet<CourseStudent> CourseStudents { get; set; }
         public virtual DbSet<DniType> DniTypes { get; set; }
@@ -100,6 +101,21 @@ namespace RegistroControl.Infrastructure.Data
                 entity.ToTable("City");
 
                 entity.Property(e => e.CityName)
+                    .IsRequired()
+                    .HasMaxLength(100)
+                    .IsUnicode(false);
+
+                entity.HasOne(d => d.Department)
+                    .WithMany(p => p.Cities)
+                    .HasForeignKey(d => d.DepartmentId)
+                    .HasConstraintName("FK_DEPARTMENT_CITY");
+            });
+
+            modelBuilder.Entity<Department>(entity =>
+            {
+                entity.ToTable("Department");
+
+                entity.Property(e => e.DepartmentName)
                     .IsRequired()
                     .HasMaxLength(100)
                     .IsUnicode(false);
