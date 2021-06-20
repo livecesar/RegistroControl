@@ -35,14 +35,26 @@ namespace RegistroControl.Infrastructure.Repositories
             await _context.SaveChangesAsync();
         }
 
-        public Task<bool> DeleteStudent(int id)
+        public async Task<bool> DeleteStudent(int id)
         {
-            throw new System.NotImplementedException();
+            var currentStudent = await GetStudent(id);
+            currentStudent.Active = false;
+
+            var result = await _context.SaveChangesAsync();
+
+            return result > 0;
         }
 
-        public Task<bool> UpdateStudent(Student student)
+        public async Task<bool> UpdateStudent(Student student)
         {
-            throw new System.NotImplementedException();
+            var currentStudent = await GetStudent(student.StudentId);
+            currentStudent.Phone = student.Phone;
+            currentStudent.Cellphone = student.Cellphone;
+            currentStudent.StudentAddress = student.StudentAddress;
+
+            var result = await _context.SaveChangesAsync();
+
+            return result > 0;
         }
     }
 }
