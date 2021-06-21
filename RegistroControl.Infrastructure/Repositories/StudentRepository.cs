@@ -18,7 +18,7 @@ namespace RegistroControl.Infrastructure.Repositories
         }
 
         public async Task<IEnumerable<Student>> GetStudents()
-        {
+        {       
             var students = await _context.Students.ToListAsync();
             return students;
         }
@@ -32,7 +32,6 @@ namespace RegistroControl.Infrastructure.Repositories
         public async Task InsertStudent(Student student)
         {
             _context.Students.Add(student);
-            await _context.SaveChangesAsync();
         }
 
         public async Task<bool> DeleteStudent(int id)
@@ -40,9 +39,7 @@ namespace RegistroControl.Infrastructure.Repositories
             var currentStudent = await GetStudent(id);
             currentStudent.Active = false;
 
-            var result = await _context.SaveChangesAsync();
-
-            return result > 0;
+            return true;
         }
 
         public async Task<bool> UpdateStudent(Student student)
@@ -52,9 +49,7 @@ namespace RegistroControl.Infrastructure.Repositories
             currentStudent.Cellphone = student.Cellphone;
             currentStudent.StudentAddress = student.StudentAddress;
 
-            var result = await _context.SaveChangesAsync();
-
-            return result > 0;
+            return true;
         }
     }
 }

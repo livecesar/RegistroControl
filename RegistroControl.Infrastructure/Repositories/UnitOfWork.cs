@@ -9,6 +9,7 @@ namespace RegistroControl.Infrastructure.Repositories
     {
         private readonly RegistroControlContext _context;
         private readonly IStudentRepository _studentRepository;
+        private readonly ICourseStudentRepository _courseStudentRepository;
 
         public UnitOfWork(RegistroControlContext contex)
         {
@@ -16,6 +17,8 @@ namespace RegistroControl.Infrastructure.Repositories
         }
 
         public IStudentRepository StudentRepository => _studentRepository ?? new StudentRepository(_context);
+
+        public ICourseStudentRepository CourseStudentRepository => _courseStudentRepository ?? new CourseStudentRepository(_context);
 
         public void Dispose()
         {

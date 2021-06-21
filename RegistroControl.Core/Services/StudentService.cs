@@ -34,11 +34,14 @@ namespace RegistroControl.Core.Services
         public async Task InsertStudent(Student student)
         {
             await _unitOfWork.StudentRepository.InsertStudent(student);
+            await _unitOfWork.SavechangesAsync();
         }
 
-        public Task<bool> UpdateStudent(Student student)
+        public async Task<bool> UpdateStudent(Student student)
         {
-            return _unitOfWork.StudentRepository.UpdateStudent(student);
+            await _unitOfWork.StudentRepository.UpdateStudent(student);
+            await _unitOfWork.SavechangesAsync();
+            return true;
         }
     }
 }
