@@ -11,6 +11,8 @@ namespace RegistroControl.Infrastructure.Mappings
         {
             CreateMap<Student, StudentDto>();
             CreateMap<StudentDto, Student>();
+            CreateMap<CourseStudent, CourseStudentDto>();
+            CreateMap<CourseStudentDto, CourseStudent>();
         }
     }
 }

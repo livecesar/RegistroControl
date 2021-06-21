@@ -8,7 +8,7 @@ namespace RegistroControl.Core.Interfaces
     public interface ICourseStudentService
     {
         Task InsertCourseStudent(CourseStudent student);
-        Task<IEnumerable<CourseStudent>> GetCourseStudent();
+        Task<IEnumerable<CourseStudent>> GetCoursesStudent();
         Task<CourseStudent> GetCourseStudent(int id);
         Task<bool> DeleteCourseStudent(int id);
         Task<bool> UpdateCourseStudent(CourseStudent courseStudent);

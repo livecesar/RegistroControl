@@ -15,11 +15,6 @@ namespace RegistroControl.Core.Services
             _unitOfWork = unitOfWork;
         }
 
-        public Task<IEnumerable<CourseStudent>> GetCourseStudent()
-        {
-            return _unitOfWork.CourseStudentRepository.GetCourseStudent();
-        }
-
         public Task<CourseStudent> GetCourseStudent(int id)
         {
             return _unitOfWork.CourseStudentRepository.GetCourseStudent(id);
@@ -43,5 +38,9 @@ namespace RegistroControl.Core.Services
             return _unitOfWork.CourseStudentRepository.DeleteCourseStudent(id);
         }
 
+        public Task<IEnumerable<CourseStudent>> GetCoursesStudent()
+        {
+            return _unitOfWork.CourseStudentRepository.GetCourseStudent();
+        }
     }
 }
