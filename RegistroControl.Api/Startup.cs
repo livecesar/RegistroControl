@@ -37,6 +37,7 @@ namespace RegistroControl.Api
 
             services.AddTransient<IStudentRepository, StudentRepository>();
             services.AddTransient<IStudentService, StudentService>();
+            services.AddTransient<IUnitOfWork, UnitOfWork>();
 
             services.AddSwaggerGen(c =>
             {

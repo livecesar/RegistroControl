@@ -8,37 +8,37 @@ namespace RegistroControl.Core.Services
 {
     public class StudentService : IStudentService
     {
-        private readonly IStudentRepository _studentRepository;
+        private readonly IUnitOfWork _unitOfWork;
 
-        public StudentService(IStudentRepository studentRepository)
+        public StudentService(IUnitOfWork unitOfWork)
         {
-            _studentRepository = studentRepository;
+            _unitOfWork = unitOfWork;
         }
 
         public Task<bool> DeleteStudent(int id)
         {
-            return _studentRepository.DeleteStudent(id);
+            return _unitOfWork.StudentRepository.DeleteStudent(id);
             
         }
 
         public Task<Student> GetStudent(int idStudent)
         {
-            return _studentRepository.GetStudent(idStudent);
+            return _unitOfWork.StudentRepository.GetStudent(idStudent);
         }
 
         public Task<IEnumerable<Student>> GetStudents()
         {
-            return _studentRepository.GetStudents();
+            return _unitOfWork.StudentRepository.GetStudents();
         }
 
         public async Task InsertStudent(Student student)
         {
-            await _studentRepository.InsertStudent(student);
+            await _unitOfWork.StudentRepository.InsertStudent(student);
         }
 
         public Task<bool> UpdateStudent(Student student)
         {
-            return _studentRepository.UpdateStudent(student);
+            return _unitOfWork.StudentRepository.UpdateStudent(student);
         }
     }
 }
