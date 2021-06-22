@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using RegistroControl.Core.Entities;
@@ -17,9 +18,9 @@ namespace RegistroControl.Infrastructure.Repositories
             _context = context;
         }
 
-        public async Task<IEnumerable<CourseStudent>> GetCoursesStudent()
+        public IEnumerable<CourseStudent> GetCoursesStudent()
         {
-            var courseStudents = await _context.CourseStudents.ToListAsync();
+            var courseStudents = _context.CourseStudents.AsEnumerable();
             return courseStudents;
         }
 

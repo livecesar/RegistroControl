@@ -9,6 +9,7 @@ using RegistroControl.Api.Responses;
 using RegistroControl.Core.DTOs;
 using RegistroControl.Core.Entities;
 using RegistroControl.Core.Interfaces;
+using RegistroControl.Core.QueryFilters;
 
 namespace RegistroControl.Api.Controllers
 {
@@ -26,9 +27,9 @@ namespace RegistroControl.Api.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult> GetCoursesStudent()
+        public async Task<ActionResult> GetCoursesStudent([FromQuery]CourseStudentQueryFilter filters)
         {
-            var courseStudents = await _courseStudentService.GetCoursesStudent();
+            var courseStudents = _courseStudentService.GetCoursesStudent(filters);
             var courseStudentsDto = _mapper.Map<IEnumerable<CourseStudentDto>>(courseStudents);
             var response = new ApiResponse<IEnumerable<CourseStudentDto>>(courseStudentsDto);
             return Ok(response);

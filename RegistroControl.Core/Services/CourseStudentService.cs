@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using RegistroControl.Core.Entities;
 using RegistroControl.Core.Exceptions;
 using RegistroControl.Core.Interfaces;
+using RegistroControl.Core.QueryFilters;
 
 namespace RegistroControl.Core.Services
 {
@@ -48,9 +50,23 @@ namespace RegistroControl.Core.Services
             return _unitOfWork.CourseStudentRepository.DeleteCourseStudent(id);
         }
 
-        public Task<IEnumerable<CourseStudent>> GetCoursesStudent()
+        public IEnumerable<CourseStudent> GetCoursesStudent(CourseStudentQueryFilter filter)
         {
-            return _unitOfWork.CourseStudentRepository.GetCoursesStudent();
+            var coursesStudent = _unitOfWork.CourseStudentRepository.GetCoursesStudent();
+
+            if (filter.IdCourse != null)
+            {
+                coursesStudent = coursesStudent.Where(x=>x.CourseId == filter.IdCourse);
+            }
+            if (filter.IdStudent != null)
+            {
+                coursesStudent = coursesStudent.Where(x => x.StudentId == filter.IdStudent);
+            }
+            if (filter.Active != null)
+            {
+                coursesStudent = coursesStudent.Where(x => x.Active);
+            }
+            return coursesStudent;
         }
 
         public Task<bool> CourseAlreadyForStudent(int idCourse, int idStudent)
