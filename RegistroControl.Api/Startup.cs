@@ -10,6 +10,7 @@ using Microsoft.OpenApi.Models;
 using RegistroControl.Core.Interfaces;
 using RegistroControl.Core.Services;
 using RegistroControl.Infrastructure.Data;
+using RegistroControl.Infrastructure.Filters;
 using RegistroControl.Infrastructure.Repositories;
 
 namespace RegistroControl.Api
@@ -28,7 +29,10 @@ namespace RegistroControl.Api
         {
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
-            services.AddControllers().AddNewtonsoftJson(options =>
+            services.AddControllers(options =>
+            {
+                options.Filters.Add<GlobalExceptionFilter>();
+            }).AddNewtonsoftJson(options =>
             {
                 options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
             });

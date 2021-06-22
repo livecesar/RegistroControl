@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using RegistroControl.Core.Entities;
+using RegistroControl.Core.Exceptions;
 using RegistroControl.Core.Interfaces;
 
 namespace RegistroControl.Core.Services
@@ -30,7 +31,7 @@ namespace RegistroControl.Core.Services
             }
             else
             {
-                throw new Exception("Course already setted for the student.");
+                throw new BusinessException("Course already setted for the student.");
             }
 
         }
