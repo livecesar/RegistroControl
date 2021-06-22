@@ -17,7 +17,7 @@ namespace RegistroControl.Infrastructure.Repositories
             _context = context;
         }
 
-        public async Task<IEnumerable<CourseStudent>> GetCourseStudent()
+        public async Task<IEnumerable<CourseStudent>> GetCoursesStudent()
         {
             var courseStudents = await _context.CourseStudents.ToListAsync();
             return courseStudents;
@@ -42,6 +42,14 @@ namespace RegistroControl.Infrastructure.Repositories
         public Task<bool> UpdateCourseStudent(CourseStudent courseStudent)
         {
             throw new NotImplementedException();
+        }
+
+        public async Task<bool> CourseAlreadyForStudent(int idCourse, int idStudent)
+        {
+            var courseStudent = await _context.CourseStudents.FirstOrDefaultAsync(x => x.CourseId == idCourse && x.StudentId == idStudent);
+            bool result = courseStudent == null ? false : true;
+
+            return result;
         }
     }
 }

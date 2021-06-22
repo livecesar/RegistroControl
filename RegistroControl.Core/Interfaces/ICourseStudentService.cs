@@ -11,6 +11,7 @@ namespace RegistroControl.Core.Interfaces
         Task<IEnumerable<CourseStudent>> GetCoursesStudent();
         Task<CourseStudent> GetCourseStudent(int id);
         Task<bool> DeleteCourseStudent(int id);
+        Task<bool> CourseAlreadyForStudent(int idCourse, int idStudent);
         Task<bool> UpdateCourseStudent(CourseStudent courseStudent);
     }
 }

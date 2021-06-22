@@ -7,7 +7,8 @@ namespace RegistroControl.Core.Interfaces
 {
     public interface ICourseStudentRepository
     {
-        Task<IEnumerable<CourseStudent>> GetCourseStudent();
+        Task<IEnumerable<CourseStudent>> GetCoursesStudent();
+        Task<bool> CourseAlreadyForStudent(int idCourse, int idStudent);
         Task<CourseStudent> GetCourseStudent(int id);
         Task InsertCourseStudent(CourseStudent courseStudent);
         Task<bool> DeleteCourseStudent(int id);
