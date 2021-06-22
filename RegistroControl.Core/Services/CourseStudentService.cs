@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using RegistroControl.Core.CustomEntities;
 using RegistroControl.Core.Entities;
 using RegistroControl.Core.Exceptions;
 using RegistroControl.Core.Interfaces;
@@ -50,7 +51,7 @@ namespace RegistroControl.Core.Services
             return _unitOfWork.CourseStudentRepository.DeleteCourseStudent(id);
         }
 
-        public IEnumerable<CourseStudent> GetCoursesStudent(CourseStudentQueryFilter filter)
+        public PagedList<CourseStudent> GetCoursesStudent(CourseStudentQueryFilter filter)
         {
             var coursesStudent = _unitOfWork.CourseStudentRepository.GetCoursesStudent();
 
@@ -66,7 +67,10 @@ namespace RegistroControl.Core.Services
             {
                 coursesStudent = coursesStudent.Where(x => x.Active);
             }
-            return coursesStudent;
+
+            var pagedCoursesStudent = PagedList<CourseStudent>.Create(coursesStudent, filter.PageNumber, filter.PageSize);
+
+            return pagedCoursesStudent;
         }
 
         public Task<bool> CourseAlreadyForStudent(int idCourse, int idStudent)

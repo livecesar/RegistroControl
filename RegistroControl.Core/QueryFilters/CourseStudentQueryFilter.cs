@@ -6,5 +6,8 @@ namespace RegistroControl.Core.QueryFilters
         public int? IdCourse { get; set; }
         public int? IdStudent { get; set; }
         public bool? Active { get; set; }
+
+        public int PageSize { get; set; }
+        public int PageNumber { get; set; }
     }
 }

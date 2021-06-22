@@ -10,6 +10,7 @@ using RegistroControl.Core.DTOs;
 using RegistroControl.Core.Entities;
 using RegistroControl.Core.Interfaces;
 using RegistroControl.Core.QueryFilters;
+using Newtonsoft.Json;
 
 namespace RegistroControl.Api.Controllers
 {
@@ -32,6 +33,19 @@ namespace RegistroControl.Api.Controllers
             var courseStudents = _courseStudentService.GetCoursesStudent(filters);
             var courseStudentsDto = _mapper.Map<IEnumerable<CourseStudentDto>>(courseStudents);
             var response = new ApiResponse<IEnumerable<CourseStudentDto>>(courseStudentsDto);
+
+            var metadata = new
+            {
+                courseStudents.TotalCount,
+                courseStudents.PageSize,
+                courseStudents.CurrentPage,
+                courseStudents.TotalPage,
+                courseStudents.HasNextPage,
+                courseStudents.HasPreviousPage
+            };
+
+            Response.Headers.Add("X-Pagination", JsonConvert.SerializeObject(metadata));
+
             return Ok(response);
         }
 
@@ -41,6 +55,7 @@ namespace RegistroControl.Api.Controllers
             var student = await _courseStudentService.GetCourseStudent(idStudent);
             var studentDto = _mapper.Map<StudentDto>(student);
             var response = new ApiResponse<StudentDto>(studentDto);
+
             return Ok(response);
         }
 

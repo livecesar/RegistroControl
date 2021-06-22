@@ -14,5 +14,6 @@
     <Folder Include="Exceptions\" />
     <Folder Include="Services\" />
     <Folder Include="QueryFilters\" />
+    <Folder Include="CustomEntities\" />
   </ItemGroup>
 </Project>
