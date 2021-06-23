@@ -1,22 +1,23 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using System.Threading.Tasks;
 using RegistroControl.Core.CustomEntities;
 using RegistroControl.Core.Entities;
 using RegistroControl.Core.Exceptions;
 using RegistroControl.Core.Interfaces;
 using RegistroControl.Core.QueryFilters;
+using Microsoft.Extensions.Options;
 
 namespace RegistroControl.Core.Services
 {
     public class CourseStudentService : ICourseStudentService
     {
         private readonly IUnitOfWork _unitOfWork;
+        private readonly PaginationOptions _paginationOptions;
 
-        public CourseStudentService(IUnitOfWork unitOfWork)
+        public CourseStudentService(IUnitOfWork unitOfWork, IOptions<PaginationOptions> options)
         {
             _unitOfWork = unitOfWork;
+            _paginationOptions = options.Value;
         }
 
         public Task<CourseStudent> GetCourseStudent(int id)
@@ -53,6 +54,9 @@ namespace RegistroControl.Core.Services
 
         public PagedList<CourseStudent> GetCoursesStudent(CourseStudentQueryFilter filter)
         {
+            filter.PageNumber = filter.PageNumber == 0 ? _paginationOptions.DefaultPageNumber : filter.PageNumber;
+            filter.PageSize = filter.PageSize == 0 ? _paginationOptions.DefaultPageSize : filter.PageSize;
+
             var coursesStudent = _unitOfWork.CourseStudentRepository.GetCoursesStudent();
 
             if (filter.IdCourse != null)

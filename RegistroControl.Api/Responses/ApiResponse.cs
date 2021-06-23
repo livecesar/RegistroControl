@@ -1,4 +1,5 @@
-﻿using System;
+﻿using RegistroControl.Core.CustomEntities;
+
 namespace RegistroControl.Api.Responses
 {
     public class ApiResponse<T>
@@ -8,5 +9,7 @@ namespace RegistroControl.Api.Responses
             Data = data;
         }
         public T Data { get; set; }
+
+        public Metadata Meta { get; set; }
     }
 }

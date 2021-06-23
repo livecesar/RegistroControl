@@ -1,16 +1,15 @@
-using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 using RegistroControl.Api.Responses;
+using RegistroControl.Core.CustomEntities;
 using RegistroControl.Core.DTOs;
 using RegistroControl.Core.Entities;
 using RegistroControl.Core.Interfaces;
 using RegistroControl.Core.QueryFilters;
-using Newtonsoft.Json;
+using RegistroControl.Infrastructure.Interfaces;
 
 namespace RegistroControl.Api.Controllers
 {
@@ -20,30 +19,39 @@ namespace RegistroControl.Api.Controllers
     {
         private readonly ICourseStudentService _courseStudentService;
         private readonly IMapper _mapper;
+        private readonly IUriService _uriService;
 
-        public CourseStudentController(ICourseStudentService courseStudentService, IMapper mapper)
+        public CourseStudentController(ICourseStudentService courseStudentService, IMapper mapper, IUriService uriService)
         {
             _courseStudentService = courseStudentService;
             _mapper = mapper;
+            _uriService = uriService;
         }
 
-        [HttpGet]
+        [HttpGet(Name = nameof(GetCoursesStudent))]
         public async Task<ActionResult> GetCoursesStudent([FromQuery]CourseStudentQueryFilter filters)
         {
             var courseStudents = _courseStudentService.GetCoursesStudent(filters);
             var courseStudentsDto = _mapper.Map<IEnumerable<CourseStudentDto>>(courseStudents);
-            var response = new ApiResponse<IEnumerable<CourseStudentDto>>(courseStudentsDto);
 
-            var metadata = new
+
+            var metadata = new Metadata()
             {
-                courseStudents.TotalCount,
-                courseStudents.PageSize,
-                courseStudents.CurrentPage,
-                courseStudents.TotalPage,
-                courseStudents.HasNextPage,
-                courseStudents.HasPreviousPage
+                TotalCount = courseStudents.TotalCount,
+                PageSize = courseStudents.PageSize,
+                CurrentPage = courseStudents.CurrentPage,
+                TotalPage = courseStudents.TotalPage,
+                HasNextPage = courseStudents.HasNextPage,
+                HasPreviousPage = courseStudents.HasPreviousPage,
+                NextPageUrl = _uriService.GetCourseStudentPaginationUri(filters,Url.RouteUrl(nameof(GetCoursesStudent))).ToString(),
+                PreviousPageUrl = _uriService.GetCourseStudentPaginationUri(filters, Url.RouteUrl(nameof(GetCoursesStudent))).ToString()
             };
 
+
+            var response = new ApiResponse<IEnumerable<CourseStudentDto>>(courseStudentsDto)
+            {
+                Meta = metadata
+            };
             Response.Headers.Add("X-Pagination", JsonConvert.SerializeObject(metadata));
 
             return Ok(response);

@@ -2,16 +2,20 @@ using System;
 using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
+using RegistroControl.Core.CustomEntities;
 using RegistroControl.Core.Interfaces;
 using RegistroControl.Core.Services;
 using RegistroControl.Infrastructure.Data;
 using RegistroControl.Infrastructure.Filters;
+using RegistroControl.Infrastructure.Interfaces;
 using RegistroControl.Infrastructure.Repositories;
+using RegistroControl.Infrastructure.Services;
 
 namespace RegistroControl.Api
 {
@@ -35,7 +39,10 @@ namespace RegistroControl.Api
             }).AddNewtonsoftJson(options =>
             {
                 options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
+                options.SerializerSettings.NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore;
             });
+
+            services.Configure<PaginationOptions>(Configuration.GetSection("Pagination"));
 
             services.AddDbContext<RegistroControlContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
@@ -44,6 +51,13 @@ namespace RegistroControl.Api
             services.AddTransient<ICourseStudentRepository, CourseStudentRepository>();
             services.AddTransient<ICourseStudentService, CourseStudentService>();
             services.AddTransient<IUnitOfWork, UnitOfWork>();
+            services.AddSingleton<IUriService>(provider =>
+            {
+                var accesor = provider.GetRequiredService<IHttpContextAccessor>();
+                var request = accesor.HttpContext.Request;
+                var absoluteUri = string.Concat(request.Scheme, "://", request.Host.ToUriComponent());
+                return new UriService(absoluteUri);
+            });
 
             services.AddSwaggerGen(c =>
             {
